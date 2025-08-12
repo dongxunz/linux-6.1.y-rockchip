@@ -20,10 +20,10 @@
 // 内容不一致
 #include "rk3566.dtsi"
 
-// rk3566-radxa-zero3
+// From rk3566-radxa-zero3
 #include <dt-bindings/leds/common.h>
 
-// rk3566-lubancat-0
+// From rk3566-lubancat-0
 #include <dt-bindings/phy/jlsemi-dt-phy.h>
 //MIPI摄像头配置
 #include "rk3568-lubancat-csi2.dtsi"
@@ -37,7 +37,7 @@
 // #include "rk3566-lubancat-dsi0-ebf410125_1080p.dtsi" //野火5.5寸 1080P
 // #include "rk3566-lubancat-dsi0-rpi.dtsi" //树莓派 5寸 800x480
 
-// rk3566-radxa-zero3.dts
+// From rk3566-radxa-zero3.dts
 // #include "rk3566-radxa-zero3.dtsi"
 
 / {
@@ -46,7 +46,7 @@
 	compatible ="embedfire,lubancat-zero", "rockchip,rk3566";
 
 	/*
-	* Form rk3566-lubancat-0.dts
+	* From rk3566-lubancat-0.dts
 	* https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	chosen: chosen {
 		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rw rootwait";
@@ -85,7 +85,7 @@
 			<0x0 0xfd90f000 0x0 0x1000>;
 	};
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	reserved-memory {
 		#address-cells = <2>;
@@ -144,7 +144,7 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 	
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	pcie_3v3: pcie2-3v3-regulator {
 		compatible = "regulator-fixed";
@@ -157,7 +157,7 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	mipi_dsi0_power: mipi-dsi0-power-regulator {
 		compatible = "regulator-fixed";
@@ -169,7 +169,7 @@
 		regulator-always-on;
 	};
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	vdd_cam_5v: vdd-cam-5v-regulator {
 		compatible = "regulator-fixed";
@@ -183,7 +183,7 @@
 		regulator-always-on;
 	};
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	cam_dovdd: cam-dovdd {
 		compatible = "regulator-fixed";
@@ -195,7 +195,7 @@
 		vin-supply = <&vdd_cam_5v>;
 	};
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	cam_avdd: cam-avdd {
 		compatible = "regulator-fixed";
@@ -207,7 +207,7 @@
 		vin-supply = <&vdd_cam_5v>;
 	};
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	cam_dvdd: cam-dvdd {
 		compatible = "regulator-fixed";
@@ -219,7 +219,7 @@
 		vin-supply = <&vdd_cam_5v>;
 	};
 	
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	leds: leds {
 		status = "okay";
@@ -236,7 +236,7 @@
 	};
 
 	/*
-	* rk3566-radxa-zero3
+	* From rk3566-radxa-zero3
 	gpio_leds: gpio-leds {
 		compatible = "gpio-leds";
 		status = "okay";
@@ -249,7 +249,7 @@
 	};
 	*/
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	backlight: backlight {
 		status = "okay";
@@ -292,7 +292,7 @@
 		default-brightness-level = <200>;
 	};
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	wifi_usb: wifi-usb {
 		compatible = "regulator-fixed";
@@ -306,7 +306,7 @@
 		gpio = <&gpio0 RK_PC1 GPIO_ACTIVE_LOW>;
 	};
 
-	// Form rk3566-lubancat-0.dts
+	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	test-power {
 		status = "okay";
@@ -315,11 +315,11 @@
 	// Both
 	hdmi_sound: hdmi-sound {
 		compatible = "simple-audio-card";
-		simple-audio-card,format = "i2s";
+		simple-audio-card,Fromat = "i2s";
 		simple-audio-card,mclk-fs = <128>;
 		// From rk3566-radxa-zero3
 		// simple-audio-card,name = "rockchip-hdmi0";
-		// Form rk3566-lubancat-0
+		// From rk3566-lubancat-0
 		simple-audio-card,name = "rockchip,hdmi";
 
 		simple-audio-card,cpu {
@@ -359,7 +359,8 @@
 	};
 	*/
 
-	// rk3566-radxa-zero3
+	/*
+	 * From rk3566-radxa-zero3
 	board_antenna: board-antenna {
 		status = "okay";
 		compatible = "regulator-fixed";
@@ -371,6 +372,7 @@
 		pinctrl-names = "default";
 		regulator-name = "board_antenna";
 	};
+	*/
 };
 
 // Both
@@ -724,7 +726,7 @@
 	};
 };
 
-// Form rk3566-lubancat-0
+// From rk3566-lubancat-0
 &i2c1 {
 	status = "okay";
 	clock-frequency = <100000>;
@@ -736,7 +738,7 @@
 	};
 };
 
-// Form rk3566-lubancat-0
+// From rk3566-lubancat-0
 //cam-gpio-setting
 &ov5647 {
     pwdn-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_LOW>;
@@ -822,7 +824,7 @@
 	vccio7-supply = <&vcc_3v3>;
 	*/
 
-	// Form rk3566-lubancat-0
+	// From rk3566-lubancat-0
 	pmuio2-supply = <&vcc3v3_pmu>;
 	vccio1-supply = <&vccio_acodec>;
 	vccio3-supply = <&vccio_sd>;
@@ -907,7 +909,7 @@
 	status = "okay";
 	*/
 
-	// Form rk3566-lubancat-0
+	// From rk3566-lubancat-0
 	max-frequency = <150000000>;
 	supports-sd;
 	bus-width = <4>;
@@ -961,14 +963,14 @@
 	status = "okay";
 };
 
-// Form rk3566-lubancat-0
+// From rk3566-lubancat-0
 &vp0 {
 	rockchip,plane-mask = <(1 << ROCKCHIP_VOP2_CLUSTER0 | 1 << ROCKCHIP_VOP2_ESMART0 | 1 << ROCKCHIP_VOP2_SMART0)>;
 	rockchip,primary-plane = <ROCKCHIP_VOP2_SMART0>;
 	// cursor-win-id = <ROCKCHIP_VOP2_CLUSTER0>;
 };
 
-// Form rk3566-lubancat-0
+// From rk3566-lubancat-0
 &vp1 {
 	rockchip,plane-mask = <(1 << ROCKCHIP_VOP2_CLUSTER1 | 1 << ROCKCHIP_VOP2_ESMART1 | 1 << ROCKCHIP_VOP2_SMART1)>;
 	rockchip,primary-plane = <ROCKCHIP_VOP2_SMART1>;
@@ -1068,30 +1070,30 @@
 	phy-mode = "rgmii";
 	clock_in_out = "output";
 
-	// Form rk3566-radxa-zero3
+	// From rk3566-radxa-zero3
 	// snps,reset-gpio = <&gpio3 RK_PC0 GPIO_ACTIVE_LOW>;
-	// Form rk3566-lubancat-0
+	// From rk3566-lubancat-0
 	snps,reset-gpio = <&gpio2 RK_PB0 GPIO_ACTIVE_LOW>;
 	snps,reset-active-low;
 
-	// Form rk3566-radxa-zero3
+	// From rk3566-radxa-zero3
 	// Reset time is 20ms, 100ms for rtl8211f
 	// snps,reset-delays-us = <0 20000 100000>;
 
-	// Form rk3566-lubancat-0
+	// From rk3566-lubancat-0
 	/* Reset time is 75ms, 100ms */
 	snps,reset-delays-us = <0 75000 100000>;
 
 	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
-	// Form rk3566-radxa-zero3
+	// From rk3566-radxa-zero3
 	// assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>;
-	// Form rk3566-lubancat-0
+	// From rk3566-lubancat-0
 	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&cru CLK_MAC1_2TOP>;
 	assigned-clock-rates = <0>, <125000000>;
 
 	pinctrl-names = "default";
 	/*
-	 * Form rk3566-radxa-zero3
+	 * From rk3566-radxa-zero3
 	pinctrl-0 = <&gmac1m1_miim
 		     &gmac1m1_tx_bus2
 		     &gmac1m1_rx_bus2
@@ -1118,7 +1120,7 @@
 // Both
 &mdio1 {
 	/*
-	 * Form rk3566-radxa-zero3
+	 * From rk3566-radxa-zero3
 	rgmii_phy1: phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x0>;
@@ -1126,7 +1128,7 @@
 	};
 	*/
 
-	// Form rk3566-lubancat-0
+	// From rk3566-lubancat-0
 	rgmii_phy1: phy@0 {
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x0>;
@@ -1141,7 +1143,7 @@
 	};
 };
 
-// Form rk3566-lubancat-0
+// From rk3566-lubancat-0
 &combphy2_psq {
 		status = "okay";
 };
@@ -1205,7 +1207,7 @@
 };
 
 /*
- * Form rk3566-radxa-zero3
+ * From rk3566-radxa-zero3
 &pinctrl {
 	pmic {
 		pmic_int: pmic_int {
