@@ -1157,11 +1157,11 @@
 		};
 
 		soc_slppin_slp: soc_slppin_slp {
-			rockchip,pins = <0 RK_PA2 RK_FUNC_1 &pcfg_pull_up>;
+			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 
 		soc_slppin_rst: soc_slppin_rst {
-			rockchip,pins = <0 RK_PA2 RK_FUNC_2 &pcfg_pull_none>;
+			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
 		spk_ctl_gpio: spk_ctl_gpio {
