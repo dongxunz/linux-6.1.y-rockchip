@@ -42,7 +42,7 @@
 
 / {
 	// 鲁班猫 Zero W
-	model = "LubanCat Zero W";
+	model = "EmbedFire LubanCat Zero W";
 	compatible ="embedfire,lubancat-zero", "rockchip,rk3566";
 
 	/*
@@ -57,11 +57,14 @@
 	fiq_debugger: fiq-debugger {
 		compatible = "rockchip,fiq-debugger";
 		rockchip,serial-id = <2>;
-		rockchip,wake-irq = <0>;
+		// rockchip,wake-irq = <0>;	// 0是无效值
 		/* If enable uart uses irq instead of fiq */
-		rockchip,irq-mode-enable = <1>;
+		/* 移除冲突的IRQ模式设置 */
+		// rockchip,irq-mode-enable = <1>;	// 必须删除此行!
 		rockchip,baudrate = <1500000>;  /* Only 115200 and 1500000 */
-		interrupts = <GIC_SPI 252 IRQ_TYPE_LEVEL_LOW>;
+		/* 修正中断触发类型 */
+		interrupts = <GIC_SPI 252 IRQ_TYPE_EDGE_RISING>;	// 改为边沿触发
+		// interrupts = <GIC_SPI 252 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&uart2m0_xfer>;
 		status = "okay";
@@ -85,8 +88,8 @@
 			<0x0 0xfd90f000 0x0 0x1000>;
 	};
 
-	// From rk3566-lubancat-0.dts
-	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
+	/* From rk3566-lubancat-0.dts
+	 * https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	reserved-memory {
 		#address-cells = <2>;
 		#size-cells = <2>;
@@ -100,6 +103,7 @@
 			pmsg-size = <0x50000>;
 		};
 	};
+	*/
 
 	// dc_5v
 	dc_5v: dc-5v {
@@ -130,6 +134,25 @@
 		vin-supply = <&dc_5v>;
 	};
 
+	vbus: vbus {
+		compatible = "regulator-fixed";
+		regulator-name = "vbus";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+	};
+
+	vcc5v0_otg: vcc5v0-otg {
+		compatible = "regulator-fixed";
+		regulator-name = "vcc5v0_otg";
+		regulator-always-on;
+		regulator-boot-on;
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		vin-supply = <&vbus>;
+	};
+
 	// vcc3v3_sys
 	vcc3v3_sys: vcc3v3-sys {
 		compatible = "regulator-fixed";
@@ -138,9 +161,9 @@
 		regulator-boot-on;
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		// rk3566-radxa-zero3
+		// From rk3566-radxa-zero3
 		// vin-supply = <&vcc_sys>;
-		// rk3566-lubancat-0
+		// From rk3566-lubancat-0
 		vin-supply = <&vcc5v0_sys>;
 	};
 	
@@ -157,8 +180,33 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
-	// From rk3566-lubancat-0.dts
-	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
+	/* 3.3V电源 */
+	mipi_dsi0_3v3: mipi-dsi0-3v3-regulator {
+    	compatible = "regulator-fixed";
+   		regulator-name = "mipi_dsi0_3v3";
+    	regulator-min-microvolt = <3300000>;
+    	regulator-max-microvolt = <3300000>;
+    	/* 共享同一个GPIO控制 */
+    	gpio = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
+    	enable-active-high;
+    	pinctrl-names = "default";
+    	pinctrl-0 = <&mipi_dsi0_pwr_en>;
+    	regulator-always-on;
+	};
+
+	/* 5V电源 */
+	mipi_dsi0_5v: mipi-dsi0-5v-regulator {
+    	compatible = "regulator-fixed";
+    	regulator-name = "mipi_dsi0_5v";
+    	regulator-min-microvolt = <5000000>;
+    	regulator-max-microvolt = <5000000>;
+    	/* 关键：不重复声明GPIO，使用电源依赖 */
+    	vin-supply = <&mipi_dsi0_3v3>;	// 依赖3.3V电源
+    	regulator-always-on;
+	};
+
+	/* From rk3566-lubancat-0.dts
+	 * https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
 	mipi_dsi0_power: mipi-dsi0-power-regulator {
 		compatible = "regulator-fixed";
 		enable-active-high;
@@ -168,6 +216,7 @@
 		regulator-name = "mipi_dsi0_power";
 		regulator-always-on;
 	};
+	*/
 
 	// From rk3566-lubancat-0.dts
 	// https://github.com/LubanCat/kernel/blob/stable-4.19-rk356x/arch/arm64/boot/dts/rockchip/rk3566-lubancat-0.dts
@@ -236,7 +285,7 @@
 	};
 
 	/*
-	* From rk3566-radxa-zero3
+	* rk3566-radxa-zero3
 	gpio_leds: gpio-leds {
 		compatible = "gpio-leds";
 		status = "okay";
@@ -404,10 +453,12 @@
 	// preset_max_vdisplay = <1080>;
 };
 
-// From rk3566-radxa-zero3
+/*
+ * From rk3566-radxa-zero3
 &hdmi_sound {
 	status = "okay";
 };
+*/
 
 // Both
 &saradc {
@@ -825,8 +876,10 @@
 	*/
 
 	// From rk3566-lubancat-0
+	pmuio1-supply = <&vcc3v3_pmu>;
 	pmuio2-supply = <&vcc3v3_pmu>;
 	vccio1-supply = <&vccio_acodec>;
+	vccio2-supply = <&vcc_1v8>;
 	vccio3-supply = <&vccio_sd>;
 	vccio4-supply = <&vcc_3v3>;
 	vccio5-supply = <&vcc_3v3>;
@@ -862,7 +915,7 @@
 
 // Both
 &rknpu {
-	rknpu-supply = <&vdd_gpu>;
+	rknpu-supply = <&vdd_npu>;
 	// From rk3566-lubancat-0
 	status = "okay";
 };
@@ -990,11 +1043,13 @@
 
 // Both
 &u2phy0_host {
+	phy-supply = <&vbus>;
 	status = "okay";
 };
 
 // Both
 &u2phy0_otg {
+	vbus-supply = <&vcc5v0_otg>;
 	status = "okay";
 };
 
@@ -1015,12 +1070,14 @@
 };
 
 // Both
-&u2phy1_otg {
+&u2phy1_host {
+	phy-supply = <&vbus>;
 	status = "okay";
 };
 
 // Both
-&u2phy1_host {
+&u2phy1_otg {
+	vbus-supply = <&vcc5v0_otg>;
 	status = "okay";
 };
 
@@ -1045,7 +1102,10 @@
 };
 
 // Both
+/* USB3.0 Host to USB2.0 only */
 &combphy1_usq {
+	// phy-supply = <&vcc3v3_sys>;
+	rockchip,dis-u3otg1-port; /* 配置 dwc3_1 控制器最高支持 high speed */
 	status = "okay";
 };
 
@@ -1065,7 +1125,9 @@
 	status = "okay";
 };
 
-// Both
+/*
+ * Both
+ * Not Use
 &gmac1 {
 	phy-mode = "rgmii";
 	clock_in_out = "output";
@@ -1081,7 +1143,7 @@
 	// snps,reset-delays-us = <0 20000 100000>;
 
 	// From rk3566-lubancat-0
-	/* Reset time is 75ms, 100ms */
+	// Reset time is 75ms, 100ms
 	snps,reset-delays-us = <0 75000 100000>;
 
 	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
@@ -1092,17 +1154,16 @@
 	assigned-clock-rates = <0>, <125000000>;
 
 	pinctrl-names = "default";
-	/*
-	 * From rk3566-radxa-zero3
-	pinctrl-0 = <&gmac1m1_miim
-		     &gmac1m1_tx_bus2
-		     &gmac1m1_rx_bus2
-		     &gmac1m1_rgmii_clk
-		     &gmac1m1_rgmii_bus>;
 
-	tx_delay = <0x47>;
-	rx_delay = <0x27>;
-	*/
+	// From rk3566-radxa-zero3
+	// pinctrl-0 = <&gmac1m1_miim
+		     // &gmac1m1_tx_bus2
+		     // &gmac1m1_rx_bus2
+		     // &gmac1m1_rgmii_clk
+		     // &gmac1m1_rgmii_bus>;
+
+	// tx_delay = <0x47>;
+	// rx_delay = <0x27>;
 
 	pinctrl-0 = <&gmac1m1_miim
 			 &gmac1m1_tx_bus2_level3
@@ -1119,14 +1180,12 @@
 
 // Both
 &mdio1 {
-	/*
-	 * From rk3566-radxa-zero3
-	rgmii_phy1: phy@0 {
-		compatible = "ethernet-phy-ieee802.3-c22";
-		reg = <0x0>;
-		status = "okay";
-	};
-	*/
+	// From rk3566-radxa-zero3
+	// rgmii_phy1: phy@0 {
+		// compatible = "ethernet-phy-ieee802.3-c22";
+		// reg = <0x0>;
+		// status = "okay";
+	//};
 
 	// From rk3566-lubancat-0
 	rgmii_phy1: phy@0 {
@@ -1142,6 +1201,7 @@
 				 JL2XXX_LED2_ACTIVITY )>;
 	};
 };
+*/
 
 // From rk3566-lubancat-0
 &combphy2_psq {
@@ -1636,6 +1696,7 @@
 
 /*
  * From rk3566-radxa-zero3
+ */
 &reserved_memory {
 	ramoops: ramoops@110000 {
 		compatible = "ramoops";
@@ -1646,7 +1707,6 @@
 		pmsg-size = <0x50000>;
 	};
 };
-*/
 
 /*
  * 为GPIO引脚分配用户可读的名称，便于调试和驱动识别。
@@ -1766,12 +1826,15 @@
 };
 */
 
-// 启用显示子系统，激活显示功能（如HDMI、MIPI等输出接口）。
+/* From rk3566-radxa-zero3
+ * 启用显示子系统，激活显示功能（如HDMI、MIPI等输出接口）。
 &display_subsystem {
 	status = "okay";
 };
+*/
 
-// 配置系统休眠/唤醒行为。
+/* From rk3566-radxa-zero3
+ * 配置系统休眠/唤醒行为。
 &rockchip_suspend {
 	status = "okay";
 	rockchip,sleep-debug-en = <1>;
@@ -1790,3 +1853,4 @@
 		)
 	>;
 };
+*/
